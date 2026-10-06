@@ -2,7 +2,8 @@ name: Deploy Shopkeeper to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
   workflow_dispatch:
 
@@ -12,7 +13,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
@@ -27,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -36,17 +37,17 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Build
+      - name: Build website
         run: npm run build
 
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist"
+          path: ./dist
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v4
